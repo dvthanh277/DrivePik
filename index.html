@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Drive Photo Album</title>
+    <style>
+      #photo-album {
+        display: flex;
+        flex-direction: row;
+        place-content: stretch center;
+        box-sizing: border-box;
+        width: 1200px;
+        margin: 0 auto;
+        gap: 8px;
+      }
+      .photo-box {
+        display: flex;
+        flex-direction: column;
+        place-content: stretch flex-start;
+        flex: 1 1 0%;
+        width: 0px;
+        gap: 8px;
+      }
+      .photo {
+        margin: 10px;
+      }
+      .photo img {
+        max-width: 100%;
+        height: auto;
+      }
+      .radio-group {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Photo Album from Google Drive</h1>
+
+    <div class="radio-group">
+      <label>
+        <input
+          type="radio"
+          name="drive-url"
+          value="https://drive.google.com/drive/folders/1WOOkYLx6j291bdVdTQpUFHcb5zY3PVcV?usp=sharing"
+          onclick="handleSubmit()"
+        />
+        Wedding
+      </label>
+
+      <!-- Add more radio buttons as needed -->
+    </div>
+
+    <div id="photo-album">
+      <div class="photo-box"></div>
+      <div class="photo-box"></div>
+      <div class="photo-box"></div>
+    </div>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+      const CLIENT_ID =
+        "105438724692-copdd31l459r34o95rqkv39vq8fpm2kc.apps.googleusercontent.com";
+      const API_KEY = "AIzaSyBKBWe_B-EBDupUs5MIJFZGSQHWPmvEhEI";
+      const DISCOVERY_DOCS = [
+        "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
+      ];
+      const SCOPES = "https://www.googleapis.com/auth/drive.readonly";
+
+      function initClient() {
+        gapi.client.init({
+          apiKey: API_KEY,
+          clientId: CLIENT_ID,
+          discoveryDocs: DISCOVERY_DOCS,
+          scope: SCOPES,
+        });
+      }
+
+      function handleClientLoad() {
+        gapi.load("client:auth2", initClient);
+      }
+
+      function handleSubmit() {
+        const selectedRadio = document.querySelector(
+          'input[name="drive-url"]:checked'
+        );
+        const urlInput = selectedRadio ? selectedRadio.value : null;
+        const folderId = extractFolderId(urlInput);
+        if (folderId) {
+          loadPhotosFromFolder(folderId);
+        } else {
+          alert("Invalid Google Drive folder URL.");
+        }
+      }
+
+      function extractFolderId(url) {
+        const match = url.match(/\/folders\/([a-zA-Z0-9_-]+)/);
+        return match ? match[1] : null;
+      }
+
+      function loadPhotosFromFolder(folderId) {
+        const photoBoxes = document.querySelectorAll(".photo-box");
+        photoBoxes.forEach((box) => {
+          box.innerHTML = ""; // Clear each photo box
+        });
+
+        // Function to fetch files and handle pagination
+        const fetchFiles = (pageToken) => {
+          gapi.client.drive.files
+            .list({
+              q: `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`,
+              fields:
+                "nextPageToken, files(id, name, thumbnailLink, webContentLink, webViewLink)",
+              pageToken: pageToken,
+            })
+            .then((response) => {
+              const files = response.result.files;
+              if (files && files.length > 0) {
+                // Distributing photos into three boxes
+                files.forEach((file, index) => {
+                  const photoBoxIndex = index % photoBoxes.length;
+                  const photoBox = photoBoxes[photoBoxIndex];
+                  const photoDiv = document.createElement("div");
+                  photoDiv.className = "photo";
+
+                  photoDiv.innerHTML = `
+                    <a href="https://lh3.googleusercontent.com/d/${file.id}" target="_blank">
+                        <img src="https://lh3.googleusercontent.com/d/${file.id}" alt="${file.name}">
+                    </a>`;
+                  photoBox.appendChild(photoDiv);
+                });
+              } else {
+                alert("No photos found in the folder.");
+              }
+
+              // If there's a next page, fetch it
+              if (response.result.nextPageToken) {
+                fetchFiles(response.result.nextPageToken);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching photos:", error);
+              alert("Failed to fetch photos.");
+            });
+        };
+
+        // Start fetching files without a page token
+        fetchFiles();
+      }
+
+      window.onload = handleClientLoad;
+    </script>
+  </body>
+</html>

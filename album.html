@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DrivePik</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../assets/images/logos/favicon.png"
+    />
+
+    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <!-- Link Swiper's CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <style>
+      #photo-album {
+        display: flex;
+        flex-direction: row;
+        place-content: stretch center;
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0 auto;
+        gap: 8px;
+      }
+      .photo-box {
+        display: flex;
+        flex-direction: column;
+        place-content: stretch flex-start;
+        flex: 1 1 0%;
+        width: 0px;
+        gap: 8px;
+      }
+      .photo {
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .photo:hover {
+        opacity: 0.7;
+      }
+      .photo img {
+        max-width: 100%;
+        height: auto;
+      }
+      .spinner {
+        margin: 40px auto;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 3.8px solid;
+        border-color: #dbdcef;
+        border-right-color: #474bff;
+        animation: spinner-d3wgkg 1s infinite linear;
+      }
+      .swiper-slide {
+        width: 100%;
+        height: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .swiper-slide a {
+        width: 100%;
+        height: 480px;
+      }
+      .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      @keyframes spinner-d3wgkg {
+        to {
+          transform: rotate(1turn);
+        }
+      }
+
+      .card-columns {
+        column-break-inside: avoid;
+        display: inline-block;
+      }
+      .left-sidebar .scroll-sidebar {
+        height: calc(100vh - 160px);
+      }
+      @media screen and (max-width: 960px) {
+        .card-columns {
+          -webkit-columns: 2;
+          -moz-columns: 2;
+          columns: 2;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--  Body Wrapper -->
+    <div
+      class="page-wrapper"
+      id="main-wrapper"
+      data-layout="vertical"
+      data-navbarbg="skin6"
+      data-sidebartype="full"
+      data-sidebar-position="fixed"
+      data-header-position="fixed"
+    >
+      <!-- Sidebar Start -->
+      <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div>
+          <div
+            class="brand-logo d-flex align-items-center justify-content-between"
+          >
+            <a
+              href="./"
+              class="text-nowrap logo-img d-flex align-items-center justify-content-between gap-2 pt-3"
+            >
+              <img
+                src="../assets/images/logos/drivepik.png"
+                width="60"
+                alt=""
+              />
+              <h4>DrivePik</h4>
+            </a>
+
+            <div
+              class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
+              id="sidebarCollapse"
+            >
+              <i class="ti ti-x fs-8"></i>
+            </div>
+          </div>
+          <!-- Sidebar navigation-->
+          <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav">
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu"></span>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="./" aria-expanded="false">
+                  <span> <i class="ti ti-photo-heart"></i> </span>
+                  <span class="hide-menu">Albums</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- End Sidebar navigation -->
+        </div>
+        <div class="py-6 px-6 mt-4">
+          <p class="mb-0 fs-2 text-center">
+            Copyright by
+            <a
+              href="https://dvthanh277.github.io/resume/"
+              target="_blank"
+              class="pe-1 text-primary text-decoration-underline"
+            >
+              Van Thanh</a
+            >
+          </p>
+        </div>
+        <!-- End Sidebar scroll-->
+      </aside>
+      <!--  Sidebar End -->
+      <!--  Main wrapper -->
+      <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+          <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="navbar-nav">
+              <li class="nav-item d-block d-xl-none">
+                <a
+                  class="nav-link sidebartoggler nav-icon-hover"
+                  id="headerCollapse"
+                  href="javascript:void(0)"
+                >
+                  <i class="ti ti-menu-2"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                  <i class="ti ti-bell-ringing"></i>
+                  <div class="notification bg-primary rounded-circle"></div>
+                </a>
+              </li>
+            </ul>
+            <div
+              class="navbar-collapse justify-content-end px-0"
+              id="navbarNav"
+            >
+              <ul
+                class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
+              >
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link nav-icon-hover"
+                    href="javascript:void(0)"
+                    id="drop2"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="../assets/images/logos/drivepik.png"
+                      alt=""
+                      width="40"
+                      height="40"
+                      class="rounded-circle"
+                    />
+                  </a>
+                  <!-- <div
+                    class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                    aria-labelledby="drop2"
+                  >
+                    <div class="message-body">
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-user fs-6"></i>
+                        <p class="mb-0 fs-3">My Profile</p>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-mail fs-6"></i>
+                        <p class="mb-0 fs-3">My Account</p>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-list-check fs-6"></i>
+                        <p class="mb-0 fs-3">My Task</p>
+                      </a>
+                      <a
+                        href="./authentication-login.html"
+                        class="btn btn-outline-primary mx-3 mt-2 d-block"
+                        >Logout</a
+                      >
+                    </div>
+                  </div> -->
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </header>
+        <!--  Header End -->
+        <div class="container" style="padding-top: 100px">
+          <i
+            onclick="history.back()"
+            class="ti ti-arrow-left"
+            style="
+              font-size: 28px;
+              cursor: pointer;
+              margin-bottom: 30px;
+              display: block;
+            "
+          ></i>
+
+          <div class="spinner" id="loading"></div>
+
+          <div id="photo-album">
+            <div class="photo-box"></div>
+            <div class="photo-box"></div>
+            <div class="photo-box"></div>
+          </div>
+
+          <div
+            class="modal fade"
+            id="album-modal"
+            tabindex="-1"
+            aria-labelledby="album-modal"
+            style="display: none"
+            aria-hidden="true"
+            data-bs-backdrop="static"
+          >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header d-flex align-items-center">
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <div class="card-body">
+                    <!-- Swiper -->
+                    <div class="swiper mySwiper">
+                      <div class="swiper-wrapper"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer"></div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="./assets/js/sidebarmenu.js"></script>
+    <script src="./assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/app.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/album.js"></script>
+  </body>
+</html>

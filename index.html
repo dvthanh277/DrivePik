@@ -1,154 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Google Drive Photo Album</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DrivePik</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../assets/images/logos/favicon.png"
+    />
+
+    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+
     <style>
-      #photo-album {
-        display: flex;
-        flex-direction: row;
-        place-content: stretch center;
-        box-sizing: border-box;
-        width: 1200px;
-        margin: 0 auto;
-        gap: 8px;
+      .card-columns {
+        column-break-inside: avoid;
+        display: inline-block;
       }
-      .photo-box {
-        display: flex;
-        flex-direction: column;
-        place-content: stretch flex-start;
-        flex: 1 1 0%;
-        width: 0px;
-        gap: 8px;
+      .left-sidebar .scroll-sidebar {
+        height: calc(100vh - 160px);
       }
-      .photo {
-        margin: 10px;
-      }
-      .photo img {
-        max-width: 100%;
-        height: auto;
-      }
-      .radio-group {
-        margin-bottom: 20px;
+      @media screen and (max-width: 960px) {
+        .card-columns {
+          -webkit-columns: 2;
+          -moz-columns: 2;
+          columns: 2;
+        }
       }
     </style>
   </head>
+
   <body>
-    <h1>Photo Album from Google Drive</h1>
+    <!--  Body Wrapper -->
+    <div
+      class="page-wrapper"
+      id="main-wrapper"
+      data-layout="vertical"
+      data-navbarbg="skin6"
+      data-sidebartype="full"
+      data-sidebar-position="fixed"
+      data-header-position="fixed"
+    >
+      <!-- Sidebar Start -->
+      <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div>
+          <div
+            class="brand-logo d-flex align-items-center justify-content-between"
+          >
+            <a
+              href="./"
+              class="text-nowrap logo-img d-flex align-items-center justify-content-between gap-2 pt-3"
+            >
+              <img
+                src="../assets/images/logos/drivepik.png"
+                width="60"
+                alt=""
+              />
+              <h4>DrivePik</h4>
+            </a>
 
-    <div class="radio-group">
-      <label>
-        <input
-          type="radio"
-          name="drive-url"
-          value="https://drive.google.com/drive/folders/1WOOkYLx6j291bdVdTQpUFHcb5zY3PVcV?usp=sharing"
-          onclick="handleSubmit()"
-        />
-        Wedding
-      </label>
+            <div
+              class="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
+              id="sidebarCollapse"
+            >
+              <i class="ti ti-x fs-8"></i>
+            </div>
+          </div>
+          <!-- Sidebar navigation-->
+          <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav">
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu"></span>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="./" aria-expanded="false">
+                  <span> <i class="ti ti-photo-heart"></i> </span>
+                  <span class="hide-menu">Albums</span>
+                </a>
+              </li>
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">Thống kê</span>
+              </li>
+              <li class="sidebar-item">
+                <div class="sidebar-link" aria-expanded="false">
+                  <span>
+                    <i class="ti ti-photo-check"></i>
+                  </span>
+                  <span class="hide-menu" id="albums_created"> </span>
+                </div>
+              </li>
 
-      <!-- Add more radio buttons as needed -->
+              <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu"></span>
+              </li>
+              <li class="sidebar-item">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary m-1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#create-album-modal"
+                  style="width: 100%"
+                >
+                  <span>
+                    <i class="ti ti-photo-plus"></i>
+                  </span>
+                  Tạo album
+                </button>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- End Sidebar navigation -->
+        </div>
+        <div class="py-6 px-6 mt-4">
+          <p class="mb-0 fs-2 text-center">
+            Copyright by
+            <a
+              href="https://dvthanh277.github.io/resume/"
+              target="_blank"
+              class="pe-1 text-primary text-decoration-underline"
+            >
+              Van Thanh</a
+            >
+          </p>
+        </div>
+        <!-- End Sidebar scroll-->
+      </aside>
+      <!--  Sidebar End -->
+      <!--  Main wrapper -->
+      <div class="body-wrapper">
+        <!--  Header Start -->
+        <header class="app-header">
+          <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="navbar-nav">
+              <li class="nav-item d-block d-xl-none">
+                <a
+                  class="nav-link sidebartoggler nav-icon-hover"
+                  id="headerCollapse"
+                  href="javascript:void(0)"
+                >
+                  <i class="ti ti-menu-2"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                  <i class="ti ti-bell-ringing"></i>
+                  <div class="notification bg-primary rounded-circle"></div>
+                </a>
+              </li>
+            </ul>
+            <div
+              class="navbar-collapse justify-content-end px-0"
+              id="navbarNav"
+            >
+              <ul
+                class="navbar-nav flex-row ms-auto align-items-center justify-content-end"
+              >
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link nav-icon-hover"
+                    href="javascript:void(0)"
+                    id="drop2"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="../assets/images/logos/drivepik.png"
+                      alt=""
+                      width="40"
+                      height="40"
+                      class="rounded-circle"
+                    />
+                  </a>
+                  <!-- <div
+                    class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                    aria-labelledby="drop2"
+                  >
+                    <div class="message-body">
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-user fs-6"></i>
+                        <p class="mb-0 fs-3">My Profile</p>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-mail fs-6"></i>
+                        <p class="mb-0 fs-3">My Account</p>
+                      </a>
+                      <a
+                        href="javascript:void(0)"
+                        class="d-flex align-items-center gap-2 dropdown-item"
+                      >
+                        <i class="ti ti-list-check fs-6"></i>
+                        <p class="mb-0 fs-3">My Task</p>
+                      </a>
+                      <a
+                        href="./authentication-login.html"
+                        class="btn btn-outline-primary mx-3 mt-2 d-block"
+                        >Logout</a
+                      >
+                    </div>
+                  </div> -->
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </header>
+        <!--  Header End -->
+        <div class="container" style="padding-top: 100px">
+          <div class="row align-items-stretch" id="albums-container"></div>
+
+          <div>
+            <!-- ------------------------------------------ -->
+            <!-- Large -->
+            <!-- ------------------------------------------ -->
+
+            <div
+              class="modal fade"
+              id="create-album-modal"
+              tabindex="-1"
+              aria-labelledby="create-album-modal"
+              style="display: none"
+              aria-hidden="true"
+              data-bs-backdrop="static"
+            >
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header d-flex align-items-center">
+                    <h3 class="modal-title text-primary" id="myLargeModalLabel">
+                      Tạo album
+                    </h3>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card-body p-2">
+                      <div class="mb-4">
+                        <label class="form-label"
+                          >Link album ảnh Google Drive
+                          <span class="text-danger"> * </span></label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          autocomplete="off"
+                          id="link"
+                          placeholder="Link Google Drive thư mục chứa ảnh"
+                        />
+                        <div class="invalid-feedback">
+                          Liên kết không chính xác. Vui lòng kiểm tra lại!
+                        </div>
+                      </div>
+
+                      <div class="mb-4">
+                        <label class="form-label"
+                          >Tên album<span class="text-danger"> * </span>
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="name"
+                          autocomplete="off"
+                          placeholder="Tên album"
+                        />
+                      </div>
+                      <div class="mb-4 row align-items-center">
+                        <label class="form-label col-sm-3 col-form-label"
+                          >Xác thực mật khẩu</label
+                        >
+                        <div class="col-sm-9 d-flex align-items-center">
+                          <div class="form-check form-switch">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              id="usePassword"
+                            />
+                          </div>
+                          <input
+                            type="password"
+                            class="form-control w-100"
+                            id="password"
+                            autocomplete="off"
+                            placeholder="Mật khẩu"
+                            style="display: none; margin-left: 16px"
+                          />
+                        </div>
+                      </div>
+                      <div class="mb-4 row align-items-center">
+                        <label class="form-label col-sm-3 col-form-label"
+                          >Ảnh bìa album</label
+                        >
+                        <div class="col-sm-9 d-flex align-items-center">
+                          <div
+                            class="alert p-0 overflow-hidden d-flex align-items-center justify-content-center alert-primary mb-0 w-50"
+                            style="min-height: 160px; border-style: dashed"
+                            id="thumbnail"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-info hstack gap-2"
+                      id="submitCreate"
+                    >
+                      <i class="ti ti-device-floppy fs-4"></i>
+                      Tạo ngay
+                    </button>
+                    <button
+                      class="btn btn-outline-danger hstack gap-2"
+                      data-bs-dismiss="modal"
+                      type="button"
+                    >
+                      <i class="ti ti-x fs-4"></i>
+                      Hủy bỏ
+                    </button>
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div id="photo-album">
-      <div class="photo-box"></div>
-      <div class="photo-box"></div>
-      <div class="photo-box"></div>
-    </div>
-
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
-    <script>
-      const CLIENT_ID =
-        "105438724692-copdd31l459r34o95rqkv39vq8fpm2kc.apps.googleusercontent.com";
-      const API_KEY = "AIzaSyBKBWe_B-EBDupUs5MIJFZGSQHWPmvEhEI";
-      const DISCOVERY_DOCS = [
-        "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
-      ];
-      const SCOPES = "https://www.googleapis.com/auth/drive.readonly";
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
 
-      function initClient() {
-        gapi.client.init({
-          apiKey: API_KEY,
-          clientId: CLIENT_ID,
-          discoveryDocs: DISCOVERY_DOCS,
-          scope: SCOPES,
-        });
-      }
-
-      function handleClientLoad() {
-        gapi.load("client:auth2", initClient);
-      }
-
-      function handleSubmit() {
-        const selectedRadio = document.querySelector(
-          'input[name="drive-url"]:checked'
-        );
-        const urlInput = selectedRadio ? selectedRadio.value : null;
-        const folderId = extractFolderId(urlInput);
-        if (folderId) {
-          loadPhotosFromFolder(folderId);
-        } else {
-          alert("Invalid Google Drive folder URL.");
-        }
-      }
-
-      function extractFolderId(url) {
-        const match = url.match(/\/folders\/([a-zA-Z0-9_-]+)/);
-        return match ? match[1] : null;
-      }
-
-      function loadPhotosFromFolder(folderId) {
-        const photoBoxes = document.querySelectorAll(".photo-box");
-        photoBoxes.forEach((box) => {
-          box.innerHTML = ""; // Clear each photo box
-        });
-
-        // Function to fetch files and handle pagination
-        const fetchFiles = (pageToken) => {
-          gapi.client.drive.files
-            .list({
-              q: `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`,
-              fields:
-                "nextPageToken, files(id, name, thumbnailLink, webContentLink, webViewLink)",
-              pageToken: pageToken,
-            })
-            .then((response) => {
-              const files = response.result.files;
-              if (files && files.length > 0) {
-                // Distributing photos into three boxes
-                files.forEach((file, index) => {
-                  const photoBoxIndex = index % photoBoxes.length;
-                  const photoBox = photoBoxes[photoBoxIndex];
-                  const photoDiv = document.createElement("div");
-                  photoDiv.className = "photo";
-
-                  photoDiv.innerHTML = `
-                    <a href="https://lh3.googleusercontent.com/d/${file.id}" target="_blank">
-                        <img src="https://lh3.googleusercontent.com/d/${file.id}" alt="${file.name}">
-                    </a>`;
-                  photoBox.appendChild(photoDiv);
-                });
-              } else {
-                alert("No photos found in the folder.");
-              }
-
-              // If there's a next page, fetch it
-              if (response.result.nextPageToken) {
-                fetchFiles(response.result.nextPageToken);
-              }
-            })
-            .catch((error) => {
-              console.error("Error fetching photos:", error);
-              alert("Failed to fetch photos.");
-            });
-        };
-
-        // Start fetching files without a page token
-        fetchFiles();
-      }
-
-      window.onload = handleClientLoad;
-    </script>
+    <script src="./assets/js/sidebarmenu.js"></script>
+    <script src="./assets/libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/app.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+    <script type="module" src="./assets/js/index.js"></script>
   </body>
 </html>
